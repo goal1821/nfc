@@ -1,0 +1,4 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Petvewi 宠物身份卡</title><meta name="theme-color" content="#0c79cb"></head>
+<body style="background:#0c79cb;color:white;font-family:system-ui;text-align:center;padding:40px"><h1>Petvewi 宠物身份卡</h1><p id="notice">正在打开身份卡…</p><p><a style="color:white" href="c.html">猫猫</a> · <a style="color:white" href="d.html">狗狗</a> · <a style="color:white" href="o.html">其他宠物</a></p>
+<script>const pages={NFCCAT000001:'c.html',NFCDEMO00001:'d.html',NFCOTHER0001:'o.html'};const id=new URLSearchParams(location.search).get('id');if(!id)location.replace('c.html');else if(Object.hasOwn(pages,id))location.replace(pages[id]);else document.getElementById('notice').textContent='未找到这张演示身份卡';</script></body></html>
