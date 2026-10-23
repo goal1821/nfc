@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<meta name="theme-color" content="#0c79cb">
+	<title>示例宠物的宠物身份卡</title>
+	<style>
+		:root { color-scheme: light; font-family: Inter, ui-rounded, "SF Pro Rounded", "PingFang SC", system-ui, sans-serif; }
+		* { box-sizing: border-box; }
+		body { margin: 0; min-height: 100vh; color: #2d251f; background: #ead9ad; }
+		body.page-dog, body.page-cat { background: linear-gradient(135deg, #075a99 0%, #0c79cb 55%, #63b8f2 100%); }
+		body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .24; background-image: radial-gradient(#bc9c56 0.75px, transparent 0.75px); background-size: 18px 18px; }
+		body.page-dog::before, body.page-cat::before { background-image: radial-gradient(rgba(255,255,255,.55) 0.75px, transparent 0.75px); }
+		main { position: relative; width: min(100%, 460px); min-height: 100vh; margin: 0 auto; padding: max(18px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom)); background: linear-gradient(180deg, #fffdf7 0%, #fbf5e8 100%); box-shadow: 0 0 60px rgba(75,55,24,.14); }
+		.page-dog main, .page-cat main { background: linear-gradient(160deg, #63b8f2 0%, #0c79cb 44%, #075a99 100%); box-shadow: 0 0 60px rgba(4,67,112,.3); }
+		.brand { display: flex; align-items: center; justify-content: space-between; margin: 2px 2px 16px; }
+		.brand-mark { display: flex; align-items: center; gap: 9px; font-size: 18px; font-weight: 900; letter-spacing: -.04em; }
+		.logo { width: 36px; height: 36px; border: 2px solid #2d251f; border-radius: 12px; display: grid; place-items: center; background: #ffd766; box-shadow: 3px 3px 0 #2d251f; }
+		.page-dog .logo, .page-cat .logo { color: #fff; border-color: #064b80; background: linear-gradient(135deg, #63b8f2 0%, #0c79cb 58%, #075a99 100%); box-shadow: 3px 3px 0 #064b80; }
+		.mini-label { color: #988a76; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+		.page-dog .brand, .page-cat .brand { color: #fff; }
+		.page-dog .mini-label, .page-cat .mini-label { color: rgba(255,255,255,.8); }
+		.card { overflow: hidden; border: 1px solid #e9dcc1; border-radius: 30px; background: rgba(255,255,255,.82); box-shadow: 0 18px 45px rgba(84,61,28,.11); }
+		.hero { position: relative; min-height: 390px; padding: 18px 24px 30px; display: flex; flex-direction: column; align-items: center; text-align: center; background: linear-gradient(180deg, #fffdf7 0%, #fff7df 74%, #ffe79d 100%); }
+		.theme-dog .hero, .theme-cat .hero { background: linear-gradient(180deg, #dcefff 0%, #c9e5f8 100%); }
+		.theme-nature .hero { background: linear-gradient(180deg, #fbfff9 0%, #eef7e8 72%, #cfe5bc 100%); }
+		.theme-dog .hero, .theme-cat .hero { min-height: 520px; padding: 0 0 30px; }
+		.pet-stage { position: relative; width: 218px; height: 218px; margin: 25px auto 15px; display: grid; place-items: center; }
+		.pet-stage::before { content: ""; position: absolute; width: 184px; height: 184px; border-radius: 46% 54% 58% 42% / 44% 42% 58% 56%; background: #ffd766; transform: rotate(-7deg); }
+		.pet-stage::after { content: ""; position: absolute; width: 198px; height: 42px; bottom: 4px; border-radius: 50%; background: rgba(141,104,36,.12); filter: blur(1px); }
+		.theme-cat .pet-stage::before { border-radius: 58% 42% 50% 50% / 46% 52% 48% 54%; background: #ffcda9; transform: rotate(6deg); }
+		.theme-dog .pet-stage, .theme-cat .pet-stage { width: 100%; height: 368px; margin: 0 0 24px; overflow: hidden; border-radius: 0 0 34px 34px; }
+		.theme-dog .pet-stage::before, .theme-dog .pet-stage::after, .theme-cat .pet-stage::before, .theme-cat .pet-stage::after { display: none; }
+		.theme-nature .pet-stage::before { width: 190px; height: 190px; border-radius: 50%; border: 2px solid #7fa66c; background: #e5f2dc; box-shadow: inset 0 0 0 12px rgba(255,255,255,.55), 0 0 0 8px rgba(127,166,108,.12); transform: none; }
+		.theme-nature .pet-stage::after { background: rgba(79,115,62,.14); }
+		.avatar { position: relative; z-index: 2; width: 154px; height: 154px; border: 5px solid #fff; border-radius: 42% 42% 36% 36%; object-fit: cover; background: #fff8e8; box-shadow: 0 10px 24px rgba(79,56,19,.14); }
+		.avatar-fallback { display: grid; place-items: center; font-size: 88px; line-height: 1; }
+		.theme-cat .avatar { border-radius: 50% 50% 40% 40%; background: #fff5ee; }
+		.theme-dog .avatar, .theme-cat .avatar { width: 100%; height: 100%; border: 0; border-radius: 0; object-fit: cover; object-position: center 26%; box-shadow: none; }
+		.theme-nature .avatar { border-radius: 50%; background: #f6fbf1; }
+		.life-symbol { display: grid; place-items: center; width: 106px; height: 106px; border: 3px solid #658f55; border-radius: 50%; color: #507a43; background: rgba(255,255,255,.66); font-size: 48px; }
+		.life-leaf { position: absolute; margin: -54px 0 0 67px; padding: 4px; border-radius: 50%; color: #fff; background: #6e9b5c; font-size: 23px; line-height: 1; transform: rotate(-18deg); }
+		.speech { position: absolute; z-index: 3; top: 16px; right: -3px; padding: 10px 13px; border: 2px solid #2d251f; border-radius: 16px 16px 16px 4px; background: #fff; font-size: 14px; font-weight: 900; transform: rotate(5deg); }
+		.theme-cat .speech { border-color: #064b80; color: #064b80; background: #f7fbff; transform: rotate(-4deg); }
+		.theme-dog .speech, .theme-cat .speech { top: auto; right: 18px; bottom: 18px; }
+		.theme-nature .speech { border-color: #507a43; color: #507a43; background: #f7fff2; transform: rotate(3deg); }
+		.paw { position: absolute; z-index: 1; color: #e5ae32; font-size: 25px; opacity: .72; }
+		.paw-one { left: 2px; top: 43px; transform: rotate(-22deg); }
+		.paw-two { right: 8px; bottom: 27px; transform: rotate(18deg); }
+		.theme-dog .paw, .theme-cat .paw { display: none; }
+		.eyebrow { margin-bottom: 7px; color: #a47f25; font-size: 12px; font-weight: 900; letter-spacing: .16em; }
+		.theme-dog .eyebrow, .theme-cat .eyebrow { color: #075a99; }
+		.theme-nature .eyebrow { color: #5f8651; }
+		.hero h1 { margin: 0; font-size: clamp(34px, 9vw, 44px); line-height: 1.05; letter-spacing: -.055em; }
+		.subtitle { margin: 8px 0 0; color: #8c806f; font-size: 15px; font-weight: 650; }
+		.content { padding: 22px; }
+		.theme-dog .content, .theme-cat .content { background: #e8f4fd; }
+		.contact-card { padding: 18px; border: 1px solid #eadfc9; border-radius: 20px; background: #fff; }
+		.theme-dog .contact-card, .theme-cat .contact-card { border-color: #9bcbee; background: #f7fbff; }
+		.section-title { margin: 0 0 15px; font-size: 17px; font-weight: 900; letter-spacing: -.02em; }
+		.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+		.detail { min-width: 0; padding: 13px; border-radius: 15px; background: #faf5ea; }
+		.theme-dog .detail, .theme-cat .detail { background: #d9edfb; }
+		.label { margin-bottom: 6px; color: #9a8b76; font-size: 11px; font-weight: 800; letter-spacing: .06em; }
+		.value { font-size: 15px; font-weight: 850; line-height: 1.4; overflow-wrap: anywhere; }
+		.actions { display: grid; gap: 10px; margin-top: 18px; }
+		.button { min-height: 52px; padding: 14px 18px; border-radius: 17px; display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; text-decoration: none; font-weight: 900; cursor: pointer; }
+		.button-primary { border: 2px solid #2d251f; color: #2d251f; background: #ffd45b; box-shadow: 3px 4px 0 #2d251f; }
+		.theme-dog .button-primary, .theme-cat .button-primary { border-color: #064b80; color: #fff; background: linear-gradient(135deg, #63b8f2 0%, #0c79cb 55%, #075a99 100%); box-shadow: 3px 4px 0 #064b80; }
+		.theme-nature .button-primary { background: #b9d99f; }
+		.button-primary:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #2d251f; }
+		.button-secondary { border: 1px solid #e2d6bf; color: #5c4f3e; background: #fffaf0; }
+		.identity-details { margin-top: 16px; padding: 3px 16px; border: 1px dashed #d8bf7e; border-radius: 18px; background: #fffaf0; }
+		.theme-dog .identity-details, .theme-cat .identity-details { border-color: #78b8e6; background: #f3f9fe; }
+		.identity-details[hidden] { display: none; }
+		.identity-row { display: grid; grid-template-columns: minmax(94px, .75fr) 1.25fr; gap: 14px; padding: 13px 0; border-top: 1px solid #eee3cf; }
+		.identity-row:first-child { border-top: 0; }
+		.identity-key { color: #9a8b76; font-size: 12px; }
+		.identity-value { text-align: right; font-size: 13px; font-weight: 850; overflow-wrap: anywhere; }
+		.status-active { color: #62874f; }
+		.footer { padding: 20px 4px 0; text-align: center; color: #a1937e; font-size: 11px; line-height: 1.7; }
+		.page-dog .footer, .page-cat .footer { color: rgba(255,255,255,.78); }
+		.empty { margin-top: 90px; padding: 42px 26px; text-align: center; }
+		.empty-icon { width: 92px; height: 92px; margin: 0 auto 22px; border: 2px solid #2d251f; border-radius: 34px; display: grid; place-items: center; background: #ffd766; box-shadow: 4px 5px 0 #2d251f; font-size: 44px; }
+		.empty h1 { margin: 0 0 12px; font-size: 27px; }
+		.empty p { margin: 0; color: #867866; line-height: 1.7; }
+		.page-private { background: linear-gradient(135deg, #075a99, #0c79cb, #63b8f2); }
+		.page-private main { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 32px; background: transparent; box-shadow: none; }
+		.page-private .avatar { width: min(72vw, 300px); height: min(72vw, 300px); border-radius: 50%; }
+		.page-private .button { color: #075a99; background: #fff; width: min(100%, 320px); border: 0; }
+		@media (min-width: 500px) { main { min-height: calc(100vh - 48px); margin: 24px auto; border-radius: 38px; } }
+		@media (prefers-reduced-motion: no-preference) { .card { animation: enter .5s cubic-bezier(.2,.8,.2,1) both; } .pet-stage { animation: float 3.6s ease-in-out infinite; } @keyframes enter { from { opacity: 0; transform: translateY(14px); } } @keyframes float { 50% { transform: translateY(-5px); } } }
+	</style>
+</head>
+<body class="page-dog">
+	<main><header class="brand">
+			<div class="brand-mark"><span class="logo">🐾</span><span>Petvewi</span></div>
+			<span class="mini-label">丢失页 UI 演示</span>
+		</header>
+		<article class="card theme-dog">
+			<section class="hero">
+				<div class="pet-stage">
+					<span class="paw paw-one">●</span><span class="paw paw-two">✦</span>
+					<img class="avatar" src="./pet-avatar.jpg" alt="示例宠物的头像"><span class="speech">汪！</span>
+				</div>
+				<div class="eyebrow">LOST PET · 丢失宠物</div>
+				<h1>示例宠物</h1>
+				<p class="subtitle">狗狗 · 品种示例</p>
+			</section>
+			<section class="content">
+				<section class="contact-card">
+					<h2 class="section-title">联系我的主人</h2>
+					<div class="contact-grid">
+						<div class="detail"><div class="label">主人姓名</div><div class="value">示例主人</div></div>
+						<div class="detail"><div class="label">联系电话</div><div class="value">123456（测试号码）</div></div>
+					</div>
+				</section>
+				<div class="actions">
+					<a class="button button-primary" href="pethealthrn://">在 Petvewi App 中打开</a>
+					<button class="button button-secondary" id="identity-toggle" type="button" aria-expanded="false" aria-controls="identity-details">查看完整身份信息</button>
+				</div>
+				<section class="identity-details" id="identity-details" aria-label="完整身份信息" hidden>
+					<div class="identity-row"><span class="identity-key">身份卡状态</span><span class="identity-value status-active">已激活</span></div>
+					<div class="identity-row"><span class="identity-key">演示编号</span><span class="identity-value">DEMO000000000000</span></div>
+					<div class="identity-row"><span class="identity-key">宠物类型</span><span class="identity-value">狗狗</span></div>
+					<div class="identity-row"><span class="identity-key">品种</span><span class="identity-value">品种示例</span></div>
+					<div class="identity-row"><span class="identity-key">紧急联系人</span><span class="identity-value">示例主人</span></div>
+					<div class="identity-row"><span class="identity-key">联系电话</span><span class="identity-value">123456（测试号码）</span></div>
+				</section>
+			</section>
+		</article>
+		<footer class="footer">丢失页 UI 演示 · 姓名、品种及联系方式均为示例<br>此静态页面不代表真实丢失状态，不连接数据库，也不记录扫码</footer></main>
+	<script>
+			const toggle = document.getElementById('identity-toggle');
+			const details = document.getElementById('identity-details');
+			toggle?.addEventListener('click', () => {
+				const expanded = toggle.getAttribute('aria-expanded') === 'true';
+				toggle.setAttribute('aria-expanded', String(!expanded));
+				toggle.textContent = expanded ? '查看完整身份信息' : '收起身份信息';
+				if (details) details.hidden = expanded;
+			});
+		</script>
+</body>
+</html>
