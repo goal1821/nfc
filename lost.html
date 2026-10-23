@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 	<meta name="theme-color" content="#0c79cb">
-	<title>示例宠物的宠物身份卡</title>
+	<title>沛沛的宠物身份卡</title>
 	<style>
 		:root { color-scheme: light; font-family: Inter, ui-rounded, "SF Pro Rounded", "PingFang SC", system-ui, sans-serif; }
 		* { box-sizing: border-box; }
@@ -96,41 +96,40 @@
 <body class="page-dog">
 	<main><header class="brand">
 			<div class="brand-mark"><span class="logo">🐾</span><span>Petvewi</span></div>
-			<span class="mini-label">丢失页 UI 演示</span>
+			<span class="mini-label">宠物身份卡</span>
 		</header>
 		<article class="card theme-dog">
 			<section class="hero">
 				<div class="pet-stage">
 					<span class="paw paw-one">●</span><span class="paw paw-two">✦</span>
-					<img class="avatar" src="./pet-avatar.jpg" alt="示例宠物的头像"><span class="speech">汪！</span>
+					<img class="avatar" src="./pet-avatar.jpg" alt="沛沛的头像"><span class="speech">汪！</span>
 				</div>
 				<div class="eyebrow">LOST PET · 丢失宠物</div>
-				<h1>示例宠物</h1>
-				<p class="subtitle">狗狗 · 品种示例</p>
+				<h1>沛沛</h1>
+				<p class="subtitle">狗狗 · 金毛寻回犬</p>
 			</section>
 			<section class="content">
 				<section class="contact-card">
 					<h2 class="section-title">联系我的主人</h2>
-					<div class="contact-grid">
-						<div class="detail"><div class="label">主人姓名</div><div class="value">示例主人</div></div>
-						<div class="detail"><div class="label">联系电话</div><div class="value">123456（测试号码）</div></div>
+					<div class="contact-grid"><div class="detail" style="grid-column:1/-1"><div class="label">联系邮箱</div><div class="value"><a href="mailto:tengpeixian08@gmail.com" style="color:inherit">tengpeixian08@gmail.com</a></div></div>
+						<div class="detail"><div class="label">主人姓名</div><div class="value">滕沛衔</div></div>
+						<div class="detail"><div class="label">联系电话</div><div class="value">18632006261</div></div>
 					</div>
 				</section>
 				<div class="actions">
 					<a class="button button-primary" href="pethealthrn://">在 Petvewi App 中打开</a>
 					<button class="button button-secondary" id="identity-toggle" type="button" aria-expanded="false" aria-controls="identity-details">查看完整身份信息</button>
 				</div>
-				<section class="identity-details" id="identity-details" aria-label="完整身份信息" hidden>
+				<section class="identity-details" id="identity-details" aria-label="完整身份信息" hidden><div class="identity-row"><span class="identity-key">联系邮箱</span><span class="identity-value"><a href="mailto:tengpeixian08@gmail.com" style="color:inherit">tengpeixian08@gmail.com</a></span></div>
 					<div class="identity-row"><span class="identity-key">身份卡状态</span><span class="identity-value status-active">已激活</span></div>
-					<div class="identity-row"><span class="identity-key">演示编号</span><span class="identity-value">DEMO000000000000</span></div>
 					<div class="identity-row"><span class="identity-key">宠物类型</span><span class="identity-value">狗狗</span></div>
-					<div class="identity-row"><span class="identity-key">品种</span><span class="identity-value">品种示例</span></div>
-					<div class="identity-row"><span class="identity-key">紧急联系人</span><span class="identity-value">示例主人</span></div>
-					<div class="identity-row"><span class="identity-key">联系电话</span><span class="identity-value">123456（测试号码）</span></div>
+					<div class="identity-row"><span class="identity-key">品种</span><span class="identity-value">金毛寻回犬</span></div>
+					<div class="identity-row"><span class="identity-key">紧急联系人</span><span class="identity-value">滕沛衔</span></div>
+					<div class="identity-row"><span class="identity-key">联系电话</span><span class="identity-value">18632006261</span></div>
 				</section>
 			</section>
 		</article>
-		<footer class="footer">丢失页 UI 演示 · 姓名、品种及联系方式均为示例<br>此静态页面不代表真实丢失状态，不连接数据库，也不记录扫码</footer></main>
+		<footer class="footer">宠物资料来自 App，姓名及手机由主人提供并授权公开<br>此页面不代表宠物实际丢失，资料及丢失状态尚未与数据库实时同步</footer></main>
 	<script>
 			const toggle = document.getElementById('identity-toggle');
 			const details = document.getElementById('identity-details');
